@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <string.h>
+struct BankAccount {
+    int accountNumber;
+    char accountHolderName[50];
+    float balance;
+};
+void createAccount(struct BankAccount *account);
+void deposit(struct BankAccount *account, float amount);
+void withdraw(struct BankAccount *account, float amount);
+void displayAccountDetails(const struct BankAccount *account);
+
+int main() {
+    struct BankAccount account;
+    int choice;
+    float amount;
+
+    do {
+        printf("\n--- Bank Application ---\n");
+        printf("1. Create Account\n");
+        printf("2. Deposit Money\n");
+        printf("3. Withdraw Money\n");
+        printf("4. Display Account Details\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                createAccount(&account);
+                break;
+            case 2:
+                printf("Enter amount to deposit: ");
+                scanf("%f", &amount);
+                deposit(&account, amount);
+                break;
+            case 3:
+                printf("Enter amount to withdraw: ");
+                scanf("%f", &amount);
+                withdraw(&account, amount);
+                break;
+            case 4:
+                displayAccountDetails(&account);
+                break;
+            case 5:
+                printf("Exiting application. Goodbye!\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+void createAccount(struct BankAccount *account) {
+    printf("Enter account number: ");
+    scanf("%d", &account->accountNumber);
+    printf("Enter account holder name: ");
+    scanf(" %[^\n]s", account->accountHolderName);
+    account->balance = 0.0; // Initialize balance to 0
+    printf("Account created successfully!\n");
+}
+void deposit(struct BankAccount *account, float amount) {
+    if (amount > 0) {
+        account->balance += amount;
+        printf("Amount deposited successfully. New balance: %.2f\n", account->balance);
+    } else {
+        printf("Invalid amount. Please enter a positive value.\n");
+    }
+}
+void withdraw(struct BankAccount *account, float amount) {
+    if (amount > 0 && amount <= account->balance) {
+        account->balance -= amount;
+        printf("Amount withdrawn successfully. New balance: %.2f\n", account->balance);
+    } else if (amount > account->balance) {
+        printf("Insufficient balance. Withdrawal failed.\n");
+    } else {
+        printf("Invalid amount. Please enter a positive value.\n");
+    }
+}
+void displayAccountDetails(const struct BankAccount *account) {
+    printf("\n--- Account Details ---\n");
+    printf("Account Number: %d\n", account->accountNumber);
+    printf("Account Holder Name: %s\n", account->accountHolderName);
+    printf("Account Balance: %.2f\n", account->balance);
+}
